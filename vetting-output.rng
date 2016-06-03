@@ -1,466 +1,334 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grammar ns="http://common-criteria.rhcloud.com/ns/rr" 
-	 xmlns="http://relaxng.org/ns/structure/1.0"
-	 datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
-	 xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"	 
-	 >
+<grammar 
+    ns="http://common-criteria.rhcloud.com/app-vetting/1.0"
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"	 
+    xmlns:htm="http://www.w3.org/1999/xhtml"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  
   <start>
-    <element name="report">
-      <a:documentation>Root element for vetting output reports</a:documentation>
-      <ref name="version"/>
-      <element name="appinfo">
-        <ref name="name"/>
-        <ref name="description"/>
-        <element name="vendor">
-          <ref name="name"/>
-          <element name="address">
-            <element name="street1">
+    <element name="report">   
+      <a:annotation>
+	App Vetting Report
+      </a:annotation>
+
+      <element name="app-info"> 
+	<a:annotation>
+	  Section containing App meta data.
+	</a:annotation>
+	<element name="name"><text/></element>
+	<optional><ref name="description"/></optional>
+	<optional>
+          <element name="vendor"> 
+	    <attribute name="name"/>
+	    <optional>
+	      <attribute name="url"/>
+	    </optional>
+	    <zeroOrMore>
+	      <choice>
+		<element name="us-address"> 
+		  <attribute name="country">
+		    <data type="NCName"/>
+		  </attribute>
+		  <element name="street1"> 
+		    <text/>
+		  </element> 
+		  <element name="street2"> 
+		    <text/>
+		  </element> 
+		  <element name="city"> 
+		    <data type="NCName"/>
+		  </element> 
+		  <element name="state"> 
+		    <data type="NCName"/>
+		  </element> 
+		  <element name="postalcode"> 
+		    <data type="integer"/>
+		  </element> 
+		  <element name="address"> 
+		    <text/>
+		  </element> 
+		</element> 
+	      </choice>
+	    </zeroOrMore>
+          </element> 
+	</optional>
+	<a:annotation>
+	  Classname
+	</a:annotation>
+	<optional>
+	  <element name="package-identification"> 
+            <data type="NCName"/>
+	  </element> 
+	</optional>
+	
+	<a:annotation>Vendor-supplied version of the App</a:annotation>
+	<ref name="version"/>
+	<oneOrMore>
+	  <element name="platform"> 
+            <element name="type"> 
+              <data type="NCName"/>
+            </element> 
+	    <optional>
+              <element name="min-version"> 
+		<text/>
+              </element> 
+	    </optional>
+	    <optional>
+              <element name="max-version"> 
+		<text/>
+              </element> 
+	    </optional>
+            <ref name="info"/>
+	  </element> 
+	</oneOrMore>
+	<optional>
+	  <element name="hash"> 
+            <attribute name="type">
+              <data type="NCName"/>
+            </attribute>
+            <text/>
+	  </element> 
+	</optional>
+	<optional>
+	  <element name="signature"> 
+            <attribute name="type">
+              <data type="NCName"/>
+            </attribute>
+            <text/>
+	  </element> 
+	</optional>
+
+	<optional>
+	  <element name="category"> 
+            <data type="NCName"/>
+	  </element> 
+	</optional>
+
+	<optional>
+	  <element name="apptype"> 
+            <data type="NCName"/>
+	  </element> 
+	</optional>
+
+	<optional>
+	  <element name="filename"> 
+            <data type="NCName"/>
+	  </element> 
+	</optional>
+	<ref name="info"/>
+      </element> 
+      <oneOrMore> 
+	<element name="evaluation">  
+	  <element name="environment">  
+	    <oneOrMore>
+              <element name="tester"> 
+		<element name="name"><text/></element>
+		<optional>
+		  <element name="org"> 
+		    <text/>
+		  </element> 
+		</optional>
+		<optional>
+		  <element name="email"> 
+		    <text/>
+		  </element> 
+		</optional>
+		<ref name="info"/>
+              </element> 
+	    </oneOrMore>
+	    <element name="date-started"> 
               <text/>
-            </element>
-            <element name="street2">
-              <zeroOrMore>
-                <text/>
-              </zeroOrMore>
-            </element>
-            <element name="city">
-              <data type="NCName"/>
-            </element>
-            <element name="state">
-              <data type="NCName"/>
-            </element>
-            <element name="postalcode">
-              <data type="integer"/>
-            </element>
-            <element name="country">
-              <data type="NCName"/>
-            </element>
-          </element>
-        </element>
-        <element name="packageidentification">
-          <data type="NCName"/>
-        </element>
-        <ref name="version"/>
-        <element name="platform">
-          <text/>
-        </element>
-        <element name="hash">
-          <attribute name="type">
-            <choice>
-              <value>sha1</value>
-              <value>sha2</value>
-            </choice>
-          </attribute>
-          <text/>
-        </element>
-        <element name="signature">
-          <attribute name="type">
-            <choice>
-              <value>sha1</value>
-              <value>sha2</value>
-            </choice>
-          </attribute>
-          <text/>
-        </element>
-        <element name="category">
-          <data type="NCName"/>
-        </element>
-        <element name="apptype">
-          <data type="NCName"/>
-        </element>
-        <element name="filename">
-          <data type="NCName"/>
-        </element>
-      </element>
-      <element name="apptester">
-        <ref name="name"/>
-        <element name="email">
-          <text/>
-        </element>
-        <element name="organization">
-          <text/>
-        </element>
-        <element name="datestested">
-          <oneOrMore>
-            <element name="date">
+	    </element> 
+	    <element name="date-completed"> 
               <text/>
-            </element>
-          </oneOrMore>
-        </element>
-      </element>
-      <element name="analysistools">
-        <oneOrMore>
-          <element name="analysistool">
-            <ref name="name"/>
-            <ref name="description"/>
-            <ref name="note"/>
-          </element>
-        </oneOrMore>
-      </element>
-      <element name="supplychain">
-        <element name="riskassessment">
-          <text/>
-        </element>
-      </element>
-      <element name="productcertifications">
-        <element name="fips">
-          <text/>
-        </element>
-        <element name="niap">
-          <text/>
-        </element>
-      </element>
-      <element name="analystnotes">
-        <element name="summary">
-          <text/>
-        </element>
-        <element name="concerns">
-          <text/>
-        </element>
-      </element>
-      <element name="hardwareresources">
-        <attribute name="ref">
-          <value>fdp_dec_ext.1.1</value>
-        </attribute>
-        <element name="network">
-          <ref name="useraware"/>
-        </element>
-        <element name="camera">
-          <ref name="useraware"/>
-        </element>
-        <element name="microphone">
-          <ref name="useraware"/>
-        </element>
-        <element name="locationservices">
-          <ref name="useraware"/>
-        </element>
-        <element name="nfc">
-          <ref name="useraware"/>
-        </element>
-        <element name="bluetooth">
-          <ref name="useraware"/>
-        </element>
-        <ref name="other"/>
-        <ref name="results"/>
-      </element>
-      <element name="inforepositories">
-        <attribute name="ref">
-          <value>fdp_dec_ext.1.2</value>
-        </attribute>
-        <element name="addressbook">
-          <ref name="useraware"/>
-        </element>
-        <element name="calendar">
-          <ref name="useraware"/>
-        </element>
-        <element name="calllists">
-          <ref name="useraware"/>
-        </element>
-        <element name="systemlogs">
-          <ref name="useraware"/>
-        </element>
-        <ref name="other"/>
-        <ref name="results"/>
-      </element>
-      <element name="networkcomms">
-        <attribute name="ref">
-          <data type="NCName"/>
-        </attribute>
-        <element name="appinitiatedconnections">
-          <oneOrMore>
-            <ref name="host"/>
-          </oneOrMore>
-        </element>
-        <element name="remotelyinitiatedconnections">
-          <oneOrMore>
-            <ref name="host"/>
-          </oneOrMore>
-        </element>
-        <ref name="results"/>
-      </element>
-      <element name="defaultcreds">
-        <attribute name="ref">
-          <value>fmt_cfg_ext.1.1</value>
-        </attribute>
-        <oneOrMore>
-          <ref name="cred"/>
-        </oneOrMore>
-        <ref name="results"></ref>
-      </element>
-      <ref name="files"/>
-      <element name="libraries">
-        <attribute name="ref">
-          <value>fpt_lib_ext.1.1</value>
-        </attribute>
-        <oneOrMore>
-          <element name="library">
-            <ref name="name"/>
-            <ref name="version"/>
-            <ref name="analysis"/>
-          </element>
-        </oneOrMore>
-        <ref name="results"/>
-      </element>
-      <element name="storedcredentials">
-        <attribute name="ref">
-          <value>fcs_sto_ext.1.1</value>
-        </attribute>
-        <oneOrMore>
-          <ref name="cred"/>
-        </oneOrMore>
-      </element>
-      <element name="piitransmitted">
-        <attribute name="ref">
-          <data type="NCName"/>
-        </attribute>
-        <element name="emailaddr">
-          <element name="destination">
-            <ref name="host"/>
-          </element>
-        </element>
-      </element>
-      <element name="supportedapis">
-        <attribute name="ref">
-          <value>fpt_api_ext.1.1</value>
-        </attribute>
-        <element name="apis">
-          <oneOrMore>
-            <ref name="api"/>
-          </oneOrMore>
-        </element>
-        <ref name="results"/>
-      </element>
-      <element name="antiexploitcompatible">
-        <attribute name="ref">
-          <value>fpt_aex_ext.1.3</value>
-        </attribute>
-        <ref name="results"/>
-      </element>
-      <element name="networkcommsprotection">
-        <attribute name="ref">
-          <value>ftp_dit_ext.1.1</value>
-        </attribute>
-        <element name="pcap">
-          <empty/>
-        </element>
-        <ref name="analysis"/>
-        <ref name="results"/>
-      </element>
-      <element name="filesencrypted">
-        <attribute name="ref">
-          <value>fdp_dar_ext.1.1</value>
-        </attribute>
-        <ref name="files"/>
-        <ref name="results"/>
-      </element>
-      <element name="config">
-        <attribute name="ref">
-          <data type="NCName"/>
-        </attribute>
-      </element>
-      <element name="untrustedupdate">
-        <attribute name="ref">
-          <value>fpt_tud_ext.1.4</value>
-        </attribute>
-        <oneOrMore>
-          <ref name="file"/>
-        </oneOrMore>
-        <ref name="results"/>
-      </element>
-      <element name="vulnsurvey">
-        <attribute name="ref">
-          <value>ava_van.1.2E</value>
-        </attribute>
-        <ref name="results"></ref>
-      </element>
-      <element name="suitability">
-        <attribute name="ref">
-          <value>ava_van.1.2C</value>
-        </attribute>
-        <ref name="results"></ref>
-      </element>
-    </element>
+	    </element> 
+	    <element name="test-devices"> 
+              <oneOrMore>
+		<element name="test-device"> 
+		  <ref name="version-attr"/>
+		  <text/>
+		</element> 
+              </oneOrMore>
+	    </element> 
+	    <ref name="info"/>
+	  </element> 
+
+	  <element name="niap-requirements"> 
+	    <attribute name="source-document"/>
+	    <attribute name="version"/>
+	    <attribute name="url">
+	      <data type="anyURI"/>
+	    </attribute>
+	    <oneOrMore>
+              <element name="section"> 
+		<attribute name="id"/>
+		<oneOrMore>
+		  <element name="subsection"> 
+		    <attribute name="id"/>
+		    <choice>
+		      <element name="not-tested"> 
+			<attribute name="req-type">
+			  <choice>
+			    <value>objective</value>
+			    <value>optional</value>
+			    <value>selectable</value>
+			  </choice>
+			</attribute>
+			<empty/>
+		      </element> 
+		      <oneOrMore>
+			<ref name="requirement"/>
+		      </oneOrMore>
+		    </choice>
+		  </element> 
+		</oneOrMore>
+	      </element> 
+	    </oneOrMore>
+	    <ref name="info"/>
+	  </element> 
+
+	  <zeroOrMore>
+	    <element name="other-requirements"> 
+	      <zeroOrMore>
+		<ref name="section"/>
+	      </zeroOrMore>
+	    </element> 
+	  </zeroOrMore>
+
+
+	  <ref name="info"/>
+	</element> 
+      </oneOrMore>
+
+    </element> 
   </start>
+
+  <define name="version-attr">
+    <attribute name="version"><text/></attribute>
+  </define>
+
   <define name="version">
-    <element name="version">
-      <data type="NMTOKEN"/>
-    </element>
+    <element name="version"><text/></element>  
   </define>
-  <define name="name">
-    <element name="name">
-      <text/>
-    </element>
-  </define>
+
   <define name="description">
-    <element name="description">
-      <text/>
-    </element>
+    <element name="description"><text/></element>  
   </define>
-  <define name="note">
-    <element name="note">
-      <text/>
-    </element>
+
+  <define name="info">
+    <a:annotation>
+      This is a generic tree-like structure that hopefully 
+      lets users expand the report structure as necessary.
+    </a:annotation>
+
+    <zeroOrMore>
+      <element name="info"> 
+	<optional>
+	  <a:annotation>
+	    Meta-data section that defines the type of data.
+	  </a:annotation>
+	  <attribute name="type"/>
+	</optional>
+	<text/>
+	<ref name="info"/>
+      </element> 
+    </zeroOrMore>
   </define>
-  <define name="useraware">
-    <element name="useraware">
-      <text/>
-    </element>
-  </define>
-  <define name="other">
-    <element name="other">
-      <oneOrMore>
-        <element name="resource">
-          <ref name="name"/>
-          <ref name="useraware"/>
-          <ref name="note"/>
-        </element>
-      </oneOrMore>
-    </element>
-  </define>
-  <define name="results">
-    <element name="results">
+
+  <define name="section">
+    <element name="section"> 
+      <attribute name="id">
+	<data type="NCName"/>
+      </attribute>
       <choice>
-        <group>
-          <ref name="determination"/>
-          <ref name="analysis"/>
-          <ref name="notes"/>
-        </group>
-        <oneOrMore>
-          <element name="result">
-            <ref name="determination"/>
-            <ref name="analysis"/>
-            <ref name="notes"/>
-          </element>
-        </oneOrMore>
+	<oneOrMore><ref name="section"/></oneOrMore>
+	<oneOrMore>
+	  <ref name="requirement"/>
+	</oneOrMore>
       </choice>
-    </element>
+      <ref name="info"/>
+    </element> 
   </define>
-  <define name="host">
-    <element name="host">
-      <element name="ipaddr">
-        <data type="NMTOKEN"/>
-      </element>
-      <element name="hostname">
-        <data type="NCName"/>
-      </element>
-      <element name="port">
-        <data type="integer"/>
-      </element>
+
+
+  <define name="requirement">
+    <element name="requirement"> 
+      <attribute name="id"/>
       <optional>
-        <element name="protocol">
-          <text/>
-        </element>
+	<element name="result"> 
+	  <choice>
+	    <value>PASSED</value>
+	    <value>FAILED</value>
+	    <element name="other"><text/></element>
+	  </choice>
+	</element> 
+	<oneOrMore>
+	  <element name="activity"> 
+	    <element name="summary">
+	      <oneOrMore><choice><ref name="html-element"/><text/></choice></oneOrMore>
+	    </element>
+	    <optional>
+	      <element name="transcript"> 
+		<oneOrMore>
+		  <choice>
+		    <element name="input"><text/></element>
+		    <element name="output"><text/></element> 
+		    <ref name="info"/>
+		    <text/>
+		  </choice>
+		</oneOrMore>
+		<text/>
+	      </element> 
+	    </optional>
+	    <optional>
+	      <a:documentation>
+	      </a:documentation>
+	      <element name="tools">
+		<oneOrMore>
+		  <element name="tool">
+		    <attribute name="name"/>
+		    <optional><attribute name="url"/></optional>
+		    <optional><attribute name="description"/></optional>
+		  </element>
+		</oneOrMore>
+	      </element>
+	    </optional>
+	  </element>
+	  <ref name="info"/>
+	</oneOrMore>
       </optional>
-    </element>
+    </element> 
   </define>
-  <define name="files">
-    <element name="files">
-      <optional>
-        <attribute name="ref">
-          <data type="NCName"/>
-        </attribute>
-      </optional>
-      <oneOrMore>
-        <ref name="file"/>
-      </oneOrMore>
-      <optional>
-        <ref name="results"/>
-      </optional>
-    </element>
-  </define>
-  <define name="analysis">
-    <element name="analysis">
+
+
+
+  <define name="html-element">
+    <a:documentation>
+      Pattern defines the html-element, which is any element in the xhtml namespace.
+    </a:documentation>
+    <element ns="http://www.w3.org/1999/xhtml">
+      <anyName>
+	<except>
+	  <nsName ns="http://common-criteria.rhcloud.com/ns/cc"/>
+	</except>
+      </anyName>
+      <a:documentation>
+	Defines all html-elements with an optional number of html attributes and descendants.
+      </a:documentation>
       <zeroOrMore>
-        <choice>
-          <text></text>
-          <element name="adnetworks">
-            <attribute name="use">
-              <choice>
-                <value>yes</value>
-                <value>no</value>
-              </choice>
-            </attribute>
-          </element>
-          <ref name="note"></ref>
-          <element name="vulnerablelib">
-            <attribute name="cve">
-            </attribute>
-          </element>
-          <element name="cloudstorage">
-            <attribute name="use">
-              <choice>
-                <value>yes</value>
-                <value>no</value>
-              </choice>
-            </attribute>
-          </element>
-        </choice>
+	<attribute>
+	  <anyName/>
+	</attribute>
+      </zeroOrMore>
+      <zeroOrMore>
+	<choice>
+	  <text/>
+	  <ref name="html-element"/>
+	</choice>
       </zeroOrMore>
     </element>
   </define>
-  <define name="api">
-    <element name="api">
-      <oneOrMore>
-        <choice>
-          <text/>
-          <ref name="api"/>
-          <element name="sdk">
-            <text/>
-          </element>
-        </choice>
-      </oneOrMore>
-    </element>
-  </define>
-  <define name="file">
-    <element name="file">
-      <element name="path">
-        <text/>
-      </element>
-      <choice>
-        <element name="encryption">
-          <data type="NCName"/>
-        </element>
-        <element name="permissions">
-          <data type="NCName"/>
-        </element>
-        <group>
-          <element name="originalfilehash">
-            <attribute name="type">
-              <data type="NCName"/>
-            </attribute>
-            <text/>
-          </element>
-          <element name="newfilehash">
-            <attribute name="type">
-              <data type="NCName"/>
-            </attribute>
-            <text/>
-          </element>
-          <element name="source">
-            <text/>
-          </element>
-        </group>
-      </choice>
-    </element>
-  </define>
-  <define name="determination">
-    <element name="determination">
-      <choice>
-        <value>Passed</value>
-        <value>Failed</value>
-        <value>Not Tested</value>
-        <empty></empty>
-      </choice>
-    </element>
-  </define>
-  <define name="notes">
-    <element name="notes">
-      <text/>
-    </element>
-  </define>
-  <define name="cred">
-    <element name="cred">
-      <ref name="name"></ref>
-      <ref name="description"></ref>
-    </element>
-  </define>
+
+
 </grammar>
