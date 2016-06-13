@@ -7,167 +7,171 @@
     datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   
   <start>
-    <element name="report">   
+    <!-- { --> <element name="report">   
       <a:annotation>
 	App Vetting Report
       </a:annotation>
 
-      <element name="app-info"> 
+      <!-- { --> <element name="app-info"> 
 	<a:annotation>
 	  Section containing App meta data.
 	</a:annotation>
-	<element name="name"><text/></element>
+	<!-- { --> <element name="name"><text/></element> <!-- } -->
 	<optional><ref name="description"/></optional>
 	<optional>
-          <element name="vendor"> 
+          <!-- { --> <element name="vendor"> 
 	    <attribute name="name"/>
 	    <optional>
 	      <attribute name="url"/>
 	    </optional>
 	    <zeroOrMore>
 	      <choice>
-		<element name="us-address"> 
-		  <attribute name="country">
-		    <data type="NCName"/>
-		  </attribute>
-		  <element name="street1"> 
+		<!-- { --> <element name="us-address">  <!-- Use Addressses -->
+		  <!-- { --> <element name="street1"> 
 		    <text/>
-		  </element> 
-		  <element name="street2"> 
+		  </element> <!-- } --> 
+		  <!-- { --> <element name="street2"> 
 		    <text/>
-		  </element> 
-		  <element name="city"> 
+		  </element> <!-- } --> 
+		  <!-- { --> <element name="city"> 
 		    <data type="NCName"/>
-		  </element> 
-		  <element name="state"> 
+		  </element> <!-- } --> 
+		  <!-- { --> <element name="state"> 
 		    <data type="NCName"/>
-		  </element> 
-		  <element name="postalcode"> 
+		  </element> <!-- } --> 
+		  <!-- { --> <element name="postalcode"> 
 		    <data type="integer"/>
-		  </element> 
-		  <element name="address"> 
-		    <text/>
-		  </element> 
-		</element> 
+		  </element> <!-- } --> 
+		</element> <!-- } --> 
+		<!-- { --> <element name="address">  <!-- Foreign addresses -->
+		  <text/>
+		</element> <!-- } --> 
 	      </choice>
 	    </zeroOrMore>
-          </element> 
+          </element> <!-- } --> 
 	</optional>
 	<a:annotation>
 	  Classname
 	</a:annotation>
 	<optional>
-	  <element name="package-identification"> 
+	  <!-- { --> <element name="package-identification"> 
             <data type="NCName"/>
-	  </element> 
+	  </element> <!-- } --> 
 	</optional>
 	
 	<a:annotation>Vendor-supplied version of the App</a:annotation>
 	<ref name="version"/>
 	<oneOrMore>
-	  <element name="platform"> 
-            <element name="type"> 
+	  <!-- { --> <element name="platform"> 
+            <!-- { --> <element name="type"> 
               <data type="NCName"/>
-            </element> 
+            </element> <!-- } --> 
 	    <optional>
-              <element name="min-version"> 
+              <!-- { --> <element name="min-version"> 
 		<text/>
-              </element> 
+              </element> <!-- } --> 
 	    </optional>
 	    <optional>
-              <element name="max-version"> 
+              <!-- { --> <element name="max-version"> 
 		<text/>
-              </element> 
+              </element> <!-- } --> 
 	    </optional>
             <ref name="info"/>
-	  </element> 
+	  </element> <!-- } --> 
 	</oneOrMore>
 	<optional>
-	  <element name="hash"> 
+	  <!-- { --> <element name="hash"> 
             <attribute name="type">
               <data type="NCName"/>
             </attribute>
             <text/>
-	  </element> 
+	  </element> <!-- } --> 
 	</optional>
 	<optional>
-	  <element name="signature"> 
+	  <!-- { --> <element name="signature"> 
             <attribute name="type">
               <data type="NCName"/>
             </attribute>
             <text/>
-	  </element> 
+	  </element> <!-- } --> 
 	</optional>
 
 	<optional>
-	  <element name="category"> 
+	  <!-- { --> <element name="category"> 
             <data type="NCName"/>
-	  </element> 
+	  </element> <!-- } --> 
 	</optional>
 
 	<optional>
-	  <element name="apptype"> 
+	  <!-- { --> <element name="apptype"> 
             <data type="NCName"/>
-	  </element> 
+	  </element> <!-- } --> 
 	</optional>
 
 	<optional>
-	  <element name="filename"> 
+	  <!-- { --> <element name="filename"> 
             <data type="NCName"/>
-	  </element> 
+	  </element> <!-- } --> 
 	</optional>
 	<ref name="info"/>
-      </element> 
+      </element> <!-- } --> 
       <oneOrMore> 
-	<element name="evaluation">  
-	  <element name="environment">  
+	<!-- { --> <element name="evaluation">  
+	  <!-- { --> <element name="environment">  
 	    <oneOrMore>
-              <element name="tester"> 
-		<element name="name"><text/></element>
+              <!-- { --> <element name="tester"> 
+		<!-- { --> <element name="name"><text/></element> <!-- } -->
 		<optional>
-		  <element name="org"> 
+		  <!-- { --> <element name="org"> 
 		    <text/>
-		  </element> 
+		  </element> <!-- } --> 
 		</optional>
 		<optional>
-		  <element name="email"> 
+		  <!-- { --> <element name="email"> 
 		    <text/>
-		  </element> 
+		  </element> <!-- } --> 
 		</optional>
 		<ref name="info"/>
-              </element> 
+              </element> <!-- } --> 
 	    </oneOrMore>
-	    <element name="date-started"> 
+	    <!-- { --> <element name="date-started"> 
               <text/>
-	    </element> 
-	    <element name="date-completed"> 
+	    </element> <!-- } --> 
+	    <!-- { --> <element name="date-completed"> 
               <text/>
-	    </element> 
-	    <element name="test-devices"> 
+	    </element> <!-- } --> 
+	    <!-- { --> <element name="test-devices"> 
               <oneOrMore>
-		<element name="test-device"> 
+		<!-- { --> <element name="test-device"> 
 		  <ref name="version-attr"/>
 		  <text/>
-		</element> 
+		</element> <!-- } --> 
               </oneOrMore>
-	    </element> 
+	    </element> <!-- } --> 
 	    <ref name="info"/>
-	  </element> 
+	  </element> <!-- } --> 
 
-	  <element name="niap-requirements"> 
+	  <!-- { --> <element name="niap-requirements"> 
 	    <attribute name="source-document"/>
-	    <attribute name="version"/>
+	    <attribute name="version">
+	      <a:documentation>
+		The version of the Application Software Protection Profile (e.g. 1.0, 1.1, 1.2)
+	      </a:documentation>
+	      <data type="string">
+		<param name="pattern">[0-9]+\.[0-9]</param>
+	      </data>
+	    </attribute>
 	    <attribute name="url">
 	      <data type="anyURI"/>
 	    </attribute>
 	    <oneOrMore>
-              <element name="section"> 
+              <!-- { --> <element name="section"> 
 		<attribute name="id"/>
 		<oneOrMore>
-		  <element name="subsection"> 
+		  <!-- { --> <element name="subsection"> 
 		    <attribute name="id"/>
 		    <choice>
-		      <element name="not-tested"> 
+		      <!-- { --> <element name="not-tested"> 
 			<attribute name="req-type">
 			  <choice>
 			    <value>objective</value>
@@ -176,32 +180,32 @@
 			  </choice>
 			</attribute>
 			<empty/>
-		      </element> 
+		      </element> <!-- } --> 
 		      <oneOrMore>
 			<ref name="requirement"/>
 		      </oneOrMore>
 		    </choice>
-		  </element> 
+		  </element> <!-- } --> 
 		</oneOrMore>
-	      </element> 
+	      </element> <!-- } --> 
 	    </oneOrMore>
 	    <ref name="info"/>
-	  </element> 
+	  </element> <!-- } --> 
 
 	  <zeroOrMore>
-	    <element name="other-requirements"> 
+	    <!-- { --> <element name="other-requirements"> 
 	      <zeroOrMore>
 		<ref name="section"/>
 	      </zeroOrMore>
-	    </element> 
+	    </element> <!-- } --> 
 	  </zeroOrMore>
 
 
 	  <ref name="info"/>
-	</element> 
+	</element> <!-- } --> 
       </oneOrMore>
 
-    </element> 
+    </element> <!-- } --> 
   </start>
 
   <define name="version-attr">
@@ -209,11 +213,11 @@
   </define>
 
   <define name="version">
-    <element name="version"><text/></element>  
+    <!-- { --> <element name="version"><text/></element> <!-- } -->  
   </define>
 
   <define name="description">
-    <element name="description"><text/></element>  
+    <!-- { --> <element name="description"><text/></element> <!-- } -->  
   </define>
 
   <define name="info">
@@ -223,7 +227,7 @@
     </a:annotation>
 
     <zeroOrMore>
-      <element name="info"> 
+      <!-- { --> <element name="info"> 
 	<optional>
 	  <a:annotation>
 	    Meta-data section that defines the type of data.
@@ -232,12 +236,12 @@
 	</optional>
 	<text/>
 	<ref name="info"/>
-      </element> 
+      </element> <!-- } --> 
     </zeroOrMore>
   </define>
 
   <define name="section">
-    <element name="section"> 
+    <!-- { --> <element name="section"> 
       <attribute name="id">
 	<data type="NCName"/>
       </attribute>
@@ -248,57 +252,57 @@
 	</oneOrMore>
       </choice>
       <ref name="info"/>
-    </element> 
+    </element> <!-- } --> 
   </define>
 
 
   <define name="requirement">
-    <element name="requirement"> 
+    <!-- { --> <element name="requirement"> 
       <attribute name="id"/>
       <optional>
-	<element name="result"> 
+	<!-- { --> <element name="result"> 
 	  <choice>
 	    <value>PASSED</value>
 	    <value>FAILED</value>
-	    <element name="other"><text/></element>
+	    <!-- { --> <element name="other"><text/></element> <!-- } -->
 	  </choice>
-	</element> 
+	</element> <!-- } --> 
 	<oneOrMore>
-	  <element name="activity"> 
-	    <element name="summary">
+	  <!-- { --> <element name="activity"> 
+	    <!-- { --> <element name="summary">
 	      <oneOrMore><choice><ref name="html-element"/><text/></choice></oneOrMore>
-	    </element>
+	    </element> <!-- } -->
 	    <optional>
-	      <element name="transcript"> 
+	      <!-- { --> <element name="transcript"> 
 		<oneOrMore>
 		  <choice>
-		    <element name="input"><text/></element>
-		    <element name="output"><text/></element> 
+		    <!-- { --> <element name="input"><text/></element> <!-- } -->
+		    <!-- { --> <element name="output"><text/></element> <!-- } --> 
 		    <ref name="info"/>
 		    <text/>
 		  </choice>
 		</oneOrMore>
 		<text/>
-	      </element> 
+	      </element> <!-- } --> 
 	    </optional>
 	    <optional>
 	      <a:documentation>
 	      </a:documentation>
-	      <element name="tools">
+	      <!-- { --> <element name="tools">
 		<oneOrMore>
-		  <element name="tool">
+		  <!-- { --> <element name="tool">
 		    <attribute name="name"/>
 		    <optional><attribute name="url"/></optional>
 		    <optional><attribute name="description"/></optional>
-		  </element>
+		  </element> <!-- } -->
 		</oneOrMore>
-	      </element>
+	      </element> <!-- } -->
 	    </optional>
-	  </element>
+	  </element> <!-- } -->
 	  <ref name="info"/>
 	</oneOrMore>
       </optional>
-    </element> 
+    </element> <!-- } --> 
   </define>
 
 
@@ -307,7 +311,7 @@
     <a:documentation>
       Pattern defines the html-element, which is any element in the xhtml namespace.
     </a:documentation>
-    <element ns="http://www.w3.org/1999/xhtml">
+    <!-- { --> <element ns="http://www.w3.org/1999/xhtml">
       <anyName>
 	<except>
 	  <nsName ns="http://common-criteria.rhcloud.com/ns/cc"/>
@@ -327,7 +331,7 @@
 	  <ref name="html-element"/>
 	</choice>
       </zeroOrMore>
-    </element>
+    </element> <!-- } -->
   </define>
 
 
