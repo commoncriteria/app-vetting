@@ -11,13 +11,28 @@
 
   <xsl:variable name="lower" select="'abcdefghijklmnopqrstuvwxyz'"/>
   <xsl:variable name="upper" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
-  <!-- http://github.com/commoncriteria/application/raw/v-->
-  <xsl:variable name="AppPpUrl"><!--
-  -->file://home/kevin/work/protection-profiles/app-vetting/v<!--
+
+  
+  <!--
+      Explicit URL to the Application Software Protection Profile input
+      document (aka the application.xml file).
+  -->
+  <xsl:param name="application_xml"/>
+
+  <!-- 
+  file:// and http:// are the only URLs that seem to work with xsltproc.
+  https:// does NOT work (and github only uses https).
+  -->
+  <xsl:variable name="AppPpUrl"><xsl:choose>
+    <xsl:when test="$application_xml=''"><!--
+  -->http://common-criteria.rhcloud.com/application-<!--
   --><xsl:value-of select="/av:report/av:evaluation/av:niap-requirements/@version"/><!--
-  -->/input/application.xml</xsl:variable>
+  -->.xml</xsl:when>
+    <xsl:otherwise><xsl:value-of select="$application_xml"/></xsl:otherwise>
+  </xsl:choose></xsl:variable>
   <xsl:template match="/av:report">
-    <xsl:message><xsl:value-of select="$AppPpUrl"/></xsl:message>
+
+    <xsl:message>QQQ <xsl:value-of select="$AppPpUrl"/></xsl:message>
 
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
@@ -130,12 +145,12 @@
 
 
 
-          <xsl:copy-of select="document('http://common-criteria.rhcloud.com/application/input/application.xml')//*/cc:f-element[@id=$reqid]/cc:title//text()"/>
+          <xsl:copy-of select="document($AppPpUrl)//*/cc:f-element[@id=$reqid]/cc:title//text()"/>
 	</xsl:copy>
       </td>
       <td>
 	<xsl:copy>
-          <xsl:copy-of select="document('https://common-criteria.rhcloud.com/application/input/application.xml')//*/cc:f-element[@id=$reqid]/cc:note//text()"/>
+          <xsl:copy-of select="document($AppPpUrl)//*/cc:f-element[@id=$reqid]/cc:note//text()"/>
 <!--          <xsl:copy-of select="document($AppPpUrl)//*/cc:f-element[@id=$reqid]/cc:note//text()"/>-->
 	</xsl:copy>
       </td>
