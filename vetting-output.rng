@@ -151,62 +151,146 @@
 	    <ref name="info"/>
 	  </element> <!-- } --> 
 
-	  <!-- { --> <element name="niap-requirements"> 
-	    <attribute name="source-document"/>
-	    <attribute name="version">
-	      <a:documentation>
-		The version of the Application Software Protection Profile (e.g. 1.0, 1.1, 1.2)
-	      </a:documentation>
-	      <data type="string">
-		<param name="pattern">[0-9]+\.[0-9]</param>
-	      </data>
-	    </attribute>
-	    <attribute name="url">
-	      <data type="anyURI"/>
-	    </attribute>
-	    <oneOrMore>
-              <!-- { --> <element name="section"> 
-		<attribute name="id"/>
-		<oneOrMore>
-		  <!-- { --> <element name="subsection"> 
-		    <attribute name="id"/>
-		    <choice>
-		      <!-- { --> <element name="not-tested"> 
-			<attribute name="req-type">
-			  <choice>
-			    <value>objective</value>
-			    <value>optional</value>
-			    <value>selectable</value>
-			  </choice>
-			</attribute>
-			<empty/>
-		      </element> <!-- } --> 
-		      <oneOrMore>
-			<ref name="requirement"/>
-		      </oneOrMore>
-		    </choice>
-		  </element> <!-- } --> 
-		</oneOrMore>
-	      </element> <!-- } --> 
-	    </oneOrMore>
-	    <ref name="info"/>
-	  </element> <!-- } --> 
-
+	  <zeroOrMore>
+	    <!-- { --> <element name="niap-requirements"> 
+	      <attribute name="source-document"/>
+	      <attribute name="version">
+		<a:documentation>
+		  The version of the Application Software Protection Profile (e.g. 1.0, 1.1, 1.2)
+		</a:documentation>
+		<data type="string">
+		  <param name="pattern">[0-9]+\.[0-9]</param>
+		</data>
+	      </attribute>
+	      <attribute name="url">
+		<data type="anyURI"/>
+	      </attribute>
+	      <oneOrMore>
+		<choice>
+		  <ref name="section"/>
+		  <ref name="subsection"/>
+		  <ref name="requirement"/>
+		</choice>
+	      </oneOrMore>
+	      <ref name="info"/>
+	    </element> <!-- } --> 
+	  </zeroOrMore>
+	  
 	  <zeroOrMore>
 	    <!-- { --> <element name="other-requirements"> 
+	      <attribute name="scheme"/>
+	      <optional>
+		<attribute name="url"/>
+	      </optional>
+
 	      <zeroOrMore>
-		<ref name="section"/>
+		<ref name="recursive-sections"/>
 	      </zeroOrMore>
 	    </element> <!-- } --> 
 	  </zeroOrMore>
-
-
 	  <ref name="info"/>
 	</element> <!-- } --> 
       </oneOrMore>
 
     </element> <!-- } --> 
   </start>
+  <!-- Start piecemeal definitions -->
+  <define name="recursive-sections">
+    <element name="section">
+      <optional><attribute name="id"/></optional>
+      <zeroOrMore>
+	<choice>
+	  <ref name="recursive-sections"/>
+	  <element name="requirement">
+	    <attribute name="id"/>
+	    <optional><attribute name="url"/></optional>
+
+
+      <optional>
+	<!-- { --> <element name="result"> 
+	  <choice>
+	    <value>PASSED</value>
+	    <value>FAILED</value>
+	    <!-- { --> <element name="other"><text/></element> <!-- } -->
+	  </choice>
+	</element> <!-- } --> 
+	<oneOrMore>
+	  <!-- { --> <element name="activity"> 
+	    <!-- { --> <element name="summary">
+	      <oneOrMore><choice><ref name="html-element"/><text/></choice></oneOrMore>
+	    </element> <!-- } -->
+	    <optional>
+	      <!-- { --> <element name="transcript"> 
+		<oneOrMore>
+		  <choice>
+		    <!-- { --> <element name="input"><text/></element> <!-- } -->
+		    <!-- { --> <element name="output"><text/></element> <!-- } --> 
+		    <ref name="info"/>
+		    <text/>
+		  </choice>
+		</oneOrMore>
+		<text/>
+	      </element> <!-- } --> 
+	    </optional>
+	    <optional>
+	      <a:documentation>
+	      </a:documentation>
+	      <!-- { --> <element name="tools">
+		<oneOrMore>
+		  <!-- { --> <element name="tool">
+		    <attribute name="name"/>
+		    <optional><attribute name="url"/></optional>
+		    <optional><attribute name="description"/></optional>
+		  </element> <!-- } -->
+		</oneOrMore>
+	      </element> <!-- } -->
+	    </optional>
+	  </element> <!-- } -->
+	  <ref name="info"/>
+	</oneOrMore>
+      </optional>
+
+
+	  </element>
+	  <ref name="info"/>
+	</choice>
+      </zeroOrMore>
+    </element>
+  </define>
+
+
+  <define name="section">
+    <!-- { --> <element name="section"> 
+      <attribute name="id">
+	<data type="NCName"/>
+      </attribute>
+      <choice>
+	<oneOrMore><ref name="subsection"/></oneOrMore>
+	<oneOrMore><ref name="requirement"/></oneOrMore>
+      </choice>
+      <ref name="info"/>
+    </element> <!-- } --> 
+  </define>
+
+  <define name="subsection">
+    <!-- { --> <element name="subsection"> 
+      <attribute name="id"/>
+      <choice>
+	<!-- { --> <element name="not-tested"> 
+	  <attribute name="req-type">
+	    <choice>
+	      <value>objective</value>
+	      <value>optional</value>
+	      <value>selectable</value>
+	    </choice>
+	  </attribute>
+	</element> <!-- } --> 
+	<oneOrMore>
+	  <ref name="requirement"/>
+	</oneOrMore>
+      </choice>
+    </element> <!-- } --> 
+  </define>
 
   <define name="version-attr">
     <attribute name="version"><text/></attribute>
@@ -240,25 +324,14 @@
     </zeroOrMore>
   </define>
 
-  <define name="section">
-    <!-- { --> <element name="section"> 
-      <attribute name="id">
-	<data type="NCName"/>
-      </attribute>
-      <choice>
-	<oneOrMore><ref name="section"/></oneOrMore>
-	<oneOrMore>
-	  <ref name="requirement"/>
-	</oneOrMore>
-      </choice>
-      <ref name="info"/>
-    </element> <!-- } --> 
-  </define>
-
 
   <define name="requirement">
     <!-- { --> <element name="requirement"> 
-      <attribute name="id"/>
+      <attribute name="id">
+	<data type="string">
+	  <param name="pattern">[a-z]+_[a-z]+(_ext)?\.[0-9]+\.[0-9]+[a-z]*</param>
+	</data>
+      </attribute>
       <optional>
 	<!-- { --> <element name="result"> 
 	  <choice>
@@ -314,7 +387,7 @@
     <!-- { --> <element ns="http://www.w3.org/1999/xhtml">
       <anyName>
 	<except>
-	  <nsName ns="http://common-criteria.rhcloud.com/ns/cc"/>
+	  <nsName ns="http://common-criteria.rhcloud.com/app-vetting/1.0"/>
 	</except>
       </anyName>
       <a:documentation>
