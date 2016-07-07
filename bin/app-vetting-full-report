@@ -1,0 +1,44 @@
+#!/bin/bash
+#set -x
+if [ $# == 0 ] || [ "$1" == '--help' ] || [ "$1" == '-h' ] ;then
+    echo "Usage:"
+    echo "   $0 <xml-report-in> [<html-report-out>]"
+    exit 0
+fi
+
+if [ "$1" == '--debug' ]; then
+    set -x
+    shift;
+fi
+    
+DASH_O="-o"
+OUT="${1%%.xml}.html"
+if [ $# == 2 ]; then
+    OUT="$2"
+    if [ $2 == --std-out ];then
+	OUT=""
+	DASH_O=""
+    fi
+fi
+
+function findDirectory() {
+    it=$1
+
+    #-- Is it called via the PATH
+    if which $it  1>/dev/null 2>&1 ; then # If it's in the path
+    	it=$(which $it)			  # Get where it is
+    fi					  #
+    #-- Check to see if it's a symlink #
+    if readlink $it >/dev/null; then # If it's a link
+	it=$(readlink $it)	     # Then resolve it
+    fi				     # 
+    #-- Fix it up
+    DIR=${it%/*}		 # Strip off the end
+    if [ "$DIR" == "$it" ]; then # If they're equal (no directories)
+    	DIR="."			 # Set the current directory
+    fi
+    echo $DIR			# Need to echo it
+}
+DIR=$(findDirectory $0)/..
+
+xsltproc $DASH_O "$OUT" $DIR/xsl/results2vettingreport.xsl "$1"
