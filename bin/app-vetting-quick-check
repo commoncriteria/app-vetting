@@ -31,5 +31,5 @@ function findDirectory() {
     echo $DIR			# Need to echo it
 }
 DIR=$(findDirectory $0)/..
-
-xsltproc $DIR/xsl/requirement-checker.xsl "$1"
+echo $DIR
+xsltproc --stringparam MAN_REQS_URL file:/$DIR/conf/mandatory-requirements.xml $DIR/xsl/requirement-checker.xsl "$1"

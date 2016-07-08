@@ -159,7 +159,15 @@
         </results>      
     </inforepositories>
 
-
+    <resourcemotivations ref="fdp_dec_ext.1.3">
+      <results>
+	<result>
+	  <determination>Not Tested</determination>
+	  <analysis/>
+	  <notes/>
+	</result>
+      </results>
+    </resourcemotivations>
     
     <networkcomms ref="fdp_dec_ext.1.4">
         <!-- open question: store whois info here, or just name/address/port? -->
@@ -428,10 +436,27 @@
 	</results>
     </filesencrypted>
     
-    <config ref="fmt_mec_ext.1.1">
-    </config>
+    <implementsrandomgeneration ref="fcs_rbg_ext.2.1">
+      <results>
+	<result>
+	  <determination>Not Tested</determination>
+	  <analysis/>
+	  <notes/>
+	</result>
+      </results>
+    </implementsrandomgeneration>
+
+    <usesplatformrandom ref="fcs_rbg_ext.1.1">
+      <results>
+	<result>
+	  <determination>Not Tested</determination>
+	  <analysis/>
+	  <notes/>
+	</result>
+      </results>
+    </usesplatformrandom>
     
-    
+    <config ref="abc"/>
     <untrustedupdate ref="fpt_tud_ext.1.4">
     <!-- list of any changes to the executable files of the app -->
         <file>
