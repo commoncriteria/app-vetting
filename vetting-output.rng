@@ -7,168 +7,212 @@
     datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   
   <start>
-    <!-- { --> <element name="report">   
-      <a:annotation>
-	App Vetting Report
-      </a:annotation>
+    <element name="report">   
+      <a:documentation>Root element for App Vetting Reports</a:documentation>
+      <element name="app-info"> 
+	<a:documentation>
+	  Meta-data about the app (identification, etc).
+	</a:documentation>
 
-      <!-- { --> <element name="app-info"> 
-	<a:annotation>
-	  Section containing App meta data.
-	</a:annotation>
-	<!-- { --> <element name="name"><text/></element> <!-- } -->
+	<element name="name">
+	<a:documentation>Name of the app as given by its vendor.</a:documentation>
+	  <text/>
+	</element>
 	<optional><ref name="description"/></optional>
 	<optional>
-          <!-- { --> <element name="vendor"> 
+          <element name="vendor"> 
+	    <a:documentation>Name of the vendor (hopefully as registered in the playstore)</a:documentation>
 	    <attribute name="name"/>
 	    <optional>
-	      <attribute name="url"/>
+	      <attribute name="url">
+		<a:documentation>URL of the vendor's main website.</a:documentation>
+		<data type="anyURI"/>
+	      </attribute>
 	    </optional>
 	    <zeroOrMore>
 	      <choice>
-		<!-- { --> <element name="us-address">  <!-- Use Addressses -->
-		  <!-- { --> <element name="street1"> 
+		<element name="us-address">  <!-- Use Addressses -->
+		  <a:documentation>USA mailing address the vendor is registered to.</a:documentation>
+		  <element name="street1"> 
 		    <text/>
-		  </element> <!-- } --> 
-		  <!-- { --> <element name="street2"> 
-		    <text/>
-		  </element> <!-- } --> 
-		  <!-- { --> <element name="city"> 
+		  </element> 
+		  <optional>
+		    <element name="street2"> 
+		      <text/>
+		    </element> 
+		  </optional>
+		  <element name="city"> 
 		    <data type="NCName"/>
-		  </element> <!-- } --> 
-		  <!-- { --> <element name="state"> 
-		    <data type="NCName"/>
-		  </element> <!-- } --> 
-		  <!-- { --> <element name="postalcode"> 
-		    <data type="integer"/>
-		  </element> <!-- } --> 
-		</element> <!-- } --> 
-		<!-- { --> <element name="address">  <!-- Foreign addresses -->
+		  </element> 
+		  <element name="state"> 
+		    <data type="string">
+		      <param name="pattern">[A-Z]{2}?</param>
+		    </data>
+		  </element> 
+		  <element name="zip-code"> 
+		    <data type="string">
+		      <param name="pattern">[0-9]{5}(\-[0-9]{4})?</param>
+		    </data>
+		  </element> 
+		</element> 
+		<element name="address">  <!-- Foreign addresses -->
+		  <a:documentation>Address that does not fit in the standard USA address.</a:documentation>
 		  <text/>
-		</element> <!-- } --> 
+		</element> 
 	      </choice>
 	    </zeroOrMore>
-          </element> <!-- } --> 
+          </element> 
 	</optional>
-	<a:annotation>
-	  Classname
-	</a:annotation>
 	<optional>
-	  <!-- { --> <element name="package-identification"> 
-            <data type="NCName"/>
-	  </element> <!-- } --> 
+	  <element name="package-identification"> 
+	    <a:documentation>Package identifier (e.g., Java package name)</a:documentation>
+	    <text/>
+	  </element> 
 	</optional>
 	
-	<a:annotation>Vendor-supplied version of the App</a:annotation>
 	<ref name="version"/>
 	<oneOrMore>
-	  <!-- { --> <element name="platform"> 
-            <!-- { --> <element name="type"> 
-              <data type="NCName"/>
-            </element> <!-- } --> 
+	  <element name="platform"> 
+	    <a:documentation>Information describing the kind of platform the app runs on</a:documentation>
+            <element name="type"> 
+	      <a:documentation>Name of the platform  (eg: iOS, Android, Windows, Tizen,...)</a:documentation>
+	      <text/>
+            </element> 
 	    <optional>
-              <!-- { --> <element name="min-version"> 
+              <element name="min-version"> 
+		<a:documentation>Minimum version of platform the app runs on.</a:documentation>
 		<text/>
-              </element> <!-- } --> 
+              </element> 
 	    </optional>
 	    <optional>
-              <!-- { --> <element name="max-version"> 
+              <element name="max-version"> 
+		<a:documentation>Maximum version of platform the app runs on.</a:documentation>
 		<text/>
-              </element> <!-- } --> 
+              </element> 
 	    </optional>
             <ref name="info"/>
-	  </element> <!-- } --> 
+	  </element> 
 	</oneOrMore>
 	<optional>
-	  <!-- { --> <element name="hash"> 
+	  <element name="hash"> 
+	    <a:documentation>Checksum of the app package </a:documentation>
             <attribute name="type">
-              <data type="NCName"/>
+	      <a:documentation>Algorithm used to compute the hash (eg. SHA-256)</a:documentation>
             </attribute>
             <text/>
-	  </element> <!-- } --> 
+	  </element> 
 	</optional>
 	<optional>
-	  <!-- { --> <element name="signature"> 
-            <attribute name="type"/>
+	  <element name="signature"> 
+	    <a:documentation>Cryptographic signature for the app package.</a:documentation>
+            <attribute name="type">
+	    <a:documentation>Algorithm used to compute the signature.</a:documentation>
+	    </attribute>
             <text/>
-	  </element> <!-- } --> 
+	  </element> 
 	</optional>
 
 	<optional>
-	  <!-- { --> <element name="category"> 
-            <data type="NCName"/>
-	  </element> <!-- } --> 
+	  <element name="category"> 
+	    <a:documentation>Category the app belongs in (eg: mapping, browser)</a:documentation>
+	    <text/>
+	  </element> 
 	</optional>
 
 	<optional>
-	  <!-- { --> <element name="apptype"> 
-            <data type="NCName"/>
-	  </element> <!-- } --> 
+	  <element name="apptype"> 
+	    <text/>
+	  </element> 
 	</optional>
 
 	<optional>
-	  <element name="platform">
-	    <a:annotation>
-	      Should describe the platform this application intends to run on.
-	    </a:annotation>
+	  <element name="Formfactor">
+	    <a:documentation>Description of the equipment this intends to run on (eg: Phone, laptop, watch).</a:documentation>
 	    <text/>
 	  </element>
 
-	<optional>
-	  <!-- { --> <element name="filename"> 
-            <data type="NCName"/>
-	  </element> <!-- } --> 
+	  <optional>
+	    <element name="filename"> 
+	      <a:documentation>Name of the apps file.</a:documentation>
+	      <text/>
+	    </element> 
+	  </optional>
+	  <ref name="info"/>
 	</optional>
-	<ref name="info"/>
-      </element> <!-- } --> 
+      </element> 
       <oneOrMore> 
-	<!-- { --> <element name="evaluation">  
-	  <!-- { --> <element name="environment">  
+	<element name="evaluation">  
+	  <a:documentation>Information about an evaluation</a:documentation>
+	  <element name="environment">
+	    <a:documentation>Information about the testing environment.</a:documentation>
 	    <oneOrMore>
-              <!-- { --> <element name="tester"> 
-		<!-- { --> <element name="name"><text/></element> <!-- } -->
+              <element name="tester"> 
+		<a:documentation>Information about a person doing the evaluation</a:documentation>
+		<element name="name">
+		  <a:documentation>Name of a person</a:documentation>
+		  <text/>
+		</element>
 		<optional>
-		  <!-- { --> <element name="org"> 
+		  <element name="org"> 
+		    <a:documentation>Name of the organization the tester represents</a:documentation>
 		    <text/>
-		  </element> <!-- } --> 
+		  </element> 
 		</optional>
 		<optional>
-		  <!-- { --> <element name="email"> 
+		  <element name="email"> 
+		    <a:documentation>Email address associated with the tester</a:documentation>
 		    <text/>
-		  </element> <!-- } --> 
+		  </element> 
 		</optional>
 		<ref name="info"/>
-              </element> <!-- } --> 
+              </element> 
 	    </oneOrMore>
-	    <!-- { --> <element name="date-started"> 
+	    <element name="date-started"> 
+	      <a:documentation>Date when the evaluation started</a:documentation>
               <text/>
-	    </element> <!-- } --> 
-	    <!-- { --> <element name="date-completed"> 
+	    </element> 
+	    <element name="date-completed"> 
+	      <a:documentation>Date when the evaluation finished</a:documentation>
               <text/>
-	    </element> <!-- } --> 
-	    <!-- { --> <element name="test-devices"> 
+	    </element> 
+	    <element name="test-devices"> 
+	      <a:documentation>Devices the app was tested on.</a:documentation>
               <oneOrMore>
-		<!-- { --> <element name="test-device"> 
-		  <ref name="version-attr"/>
+		<element name="test-device"> 
+		  <a:documentation>Device it was tested on (e.g. Samsung Galaxy, iPhone)</a:documentation>
+		  <ref name="version-attr">
+		    <a:documentation>Version of the test device</a:documentation>
+		  </ref>
 		  <text/>
-		</element> <!-- } --> 
+		</element> 
               </oneOrMore>
-	    </element> <!-- } --> 
+	    </element> 
 	    <ref name="info"/>
-	  </element> <!-- } --> 
+	  </element> 
 
 	  <zeroOrMore>
-	    <!-- { --> <element name="niap-requirements"> 
-	      <attribute name="source-document"/>
+	    <element name="niap-requirements"> 
+	      <a:documentation>
+		Element for NIAP requirements. Each NIAP requirements section should correspond to
+		a specific EP or PP. Requirements are grouped under this section. They can either
+		be organized into sections/subsections/requirements or less organized into just 
+		subsections or requirements. It should not matter.
+		
+		
+	      </a:documentation>
+	      <attribute name="source-document">
+		<a:documentation>NIAP PP or EP the requirements were gleaned from</a:documentation>
+	      </attribute>
 	      <attribute name="version">
 		<a:documentation>
-		  The version of the Application Software Protection Profile (e.g. 1.0, 1.1, 1.2)
+		  The version of the PP or EP
 		</a:documentation>
 		<data type="string">
 		  <param name="pattern">[0-9]+\.[0-9]</param>
 		</data>
 	      </attribute>
 	      <attribute name="url">
+		<a:documentation>Web location of the PP or EP</a:documentation>
 		<data type="anyURI"/>
 	      </attribute>
 	      <oneOrMore>
@@ -179,70 +223,108 @@
 		</choice>
 	      </oneOrMore>
 	      <ref name="info"/>
-	    </element> <!-- } --> 
+	    </element> 
 	  </zeroOrMore>
 	  
 	  <zeroOrMore>
-	    <!-- { --> <element name="other-requirements"> 
-	      <attribute name="scheme"/>
+	    <element name="other-requirements"> 
+	      <a:documentation>Non-NIAP PP or EP requirements</a:documentation>
+	      <attribute name="scheme">
+		<a:documentation>Name of the organization where the requirements were taken from.</a:documentation>
+	      </attribute>
 	      <optional>
-		<attribute name="url"/>
+		<attribute name="url">
+		  <a:documentation>Web address where one could go to learn more about the requirements</a:documentation>
+		  <data type="anyURI"/>
+		</attribute>
 	      </optional>
 
 	      <zeroOrMore>
 		<ref name="recursive-sections"/>
 	      </zeroOrMore>
-	    </element> <!-- } --> 
+	    </element> 
 	  </zeroOrMore>
 	  <ref name="info"/>
-	</element> <!-- } --> 
+	</element> 
       </oneOrMore>
 
-    </element> <!-- } --> 
+    </element> 
   </start>
   <!-- Start piecemeal definitions -->
+
   <define name="recursive-sections">
+    <a:documentation>Pattern to handle arbitrarily deep nesting of different sections and categories</a:documentation>
+
     <element name="section">
-      <optional><attribute name="id"/></optional>
+      <a:documentation>Level of nesting</a:documentation>
+      <optional>
+	<attribute name="id">
+	  <a:documentation>Name or identifier associated with this level</a:documentation>
+	</attribute>
+      </optional>
       <zeroOrMore>
 	<choice>
 	  <ref name="recursive-sections"/>
 	  <element name="requirement">
-	    <attribute name="id"/>
-	    <optional><attribute name="url"/></optional>
+	    <a:documentation>Describes a generic requirement</a:documentation>
+	    <attribute name="id">
+	      <a:documentation>Unique name or identifier associated with this requirement</a:documentation>
+	    </attribute>
+	    <optional>
+	      <attribute name="url">
+		<a:documentation>URL associated with this requirement</a:documentation>
+		<data type="anyURI"/>
+	      </attribute>
+	    </optional>
 	    <ref name="results-section"/>
 	    <oneOrMore>
-	      <!-- { --> <element name="activity"> 
-		<!-- { --> <element name="summary">
+	      <element name="activity"> 
+		<a:documentation>Activities completed to check this compliance</a:documentation>
+		<element name="summary">
+		  <a:documentation>Description of the actions performed with HTML if stylized content is desired</a:documentation>
 		  <ref name="html-content"/>
-		</element> <!-- } -->
+		</element>
 		<optional>
-		  <!-- { --> <element name="transcript"> 
+		  <element name="transcript"> 
+		    <a:documentation>Data the represents what happened on a terminal if that was the method of testing</a:documentation>
+		    <element name="command">
+		      <a:documentation>Command executed</a:documentation>
+		      <text/>
+		    </element>
 		    <oneOrMore>
 		      <choice>
-			<!-- { --> <element name="input"><text/></element> <!-- } -->
-			<!-- { --> <element name="output"><text/></element> <!-- } --> 
+			<element name="input">
+			  <a:documentation>Text that is sent to the application</a:documentation>
+			  <text/>
+			</element>
+			<element name="output">
+			  <a:documentation>Text printed by the application</a:documentation>
+			<text/></element> 
 			<ref name="info"/>
 			<text/>
 		      </choice>
 		    </oneOrMore>
 		    <text/>
-		  </element> <!-- } --> 
+		  </element> 
 		</optional>
 		<optional>
-		  <a:documentation>
-		  </a:documentation>
-		  <!-- { --> <element name="tools">
+		  <element name="tools">
+		    <a:documentation>Tools used for the evaluation </a:documentation>
 		    <oneOrMore>
-		      <!-- { --> <element name="tool">
+		      <element name="tool">
+			<a:documentation>Tool used for the evaluation</a:documentation>
 			<attribute name="name"/>
-			<optional><attribute name="url"/></optional>
+			<optional>
+			  <attribute name="url">
+			    <data type="anyURI"/>
+			  </attribute>
+			</optional>
 			<optional><attribute name="description"/></optional>
-		      </element> <!-- } -->
+		      </element>
 		    </oneOrMore>
-		  </element> <!-- } -->
+		  </element>
 		</optional>
-	      </element> <!-- } -->
+	      </element>
 	      <ref name="info"/>
 	    </oneOrMore>
 
@@ -255,8 +337,15 @@
 
 
   <define name="section">
-    <!-- { --> <element name="section"> 
+    <element name="section"> 
+      <a:documentation>
+	Represents a NIAP PP or EP section. Requirements under it can be organized into subsections
+	or requirements.
+      </a:documentation>
       <attribute name="id">
+	<a:documentation>
+	  ID of the section should correspond to a <htm:i>Functional Class Name</htm:i> from CCPART2V3.1R2.pdf.
+	</a:documentation>
 	<data type="NCName"/>
       </attribute>
       <choice>
@@ -264,24 +353,27 @@
 	<oneOrMore><ref name="requirement"/></oneOrMore>
       </choice>
       <ref name="info"/>
-    </element> <!-- } --> 
+    </element> 
   </define>
 
   <define name="subsection">
-    <!-- { --> <element name="subsection"> 
+    <element name="subsection"> 
+      <a:documentation>
+	  ID of the section should correspond to the <htm:i>Function Family Name</htm:i> in CCPART2V3.1R2.pdf.
+      </a:documentation>
       <attribute name="id"/>
       <choice>
 	<element name="not-tested"> 
 	  <optional><text/></optional>
-	</element> <!-- } --> 
+	</element> 
 	<element name="not-applicable"> 
 	  <optional><text/></optional>
-	</element> <!-- } --> 
+	</element> 
 	<oneOrMore>
 	  <ref name="requirement"/>
 	</oneOrMore>
       </choice>
-    </element> <!-- } --> 
+    </element> 
   </define>
 
   <define name="version-attr">
@@ -289,36 +381,36 @@
   </define>
 
   <define name="version">
-    <!-- { --> <element name="version"><text/></element> <!-- } -->  
+    <element name="version"><text/></element>  
   </define>
 
   <define name="description">
-    <!-- { --> <element name="description"><text/></element> <!-- } -->  
+    <element name="description"><text/></element>  
   </define>
 
   <define name="info">
-    <a:annotation>
+    <a:documentation>
       This is a generic tree-like structure that hopefully 
       lets users expand the report structure as necessary.
-    </a:annotation>
+    </a:documentation>
 
     <zeroOrMore>
-      <!-- { --> <element name="info"> 
+      <element name="info"> 
 	<optional>
-	  <a:annotation>
+	  <a:documentation>
 	    Meta-data section that defines the type of data.
-	  </a:annotation>
+	  </a:documentation>
 	  <attribute name="type"/>
 	</optional>
 	<text/>
 	<ref name="info"/>
-      </element> <!-- } --> 
+      </element> 
     </zeroOrMore>
   </define>
 
 
   <define name="requirement">
-    <!-- { --> <element name="requirement"> 
+    <element name="requirement"> 
       <attribute name="id">
 	<data type="string">
 	  <param name="pattern">[a-z]+_[a-z]+(_ext)?\.[0-9]+\.[0-9]+[a-z]*</param>
@@ -335,41 +427,41 @@
       <optional>
 	<ref name="results-section"/>
 	<oneOrMore>
-	  <!-- { --> <element name="activity"> 
-	    <!-- { --> <element name="summary">
+	  <element name="activity"> 
+	    <element name="summary">
 	      <ref name="html-content"/>
-	    </element> <!-- } -->
+	    </element>
 	    <optional>
-	      <!-- { --> <element name="transcript"> 
+	      <element name="transcript"> 
 		<oneOrMore>
 		  <choice>
-		    <!-- { --> <element name="input"><text/></element> <!-- } -->
-		    <!-- { --> <element name="output"><text/></element> <!-- } --> 
+		    <element name="input"><text/></element>
+		    <element name="output"><text/></element> 
 		    <ref name="info"/>
 		    <text/>
 		  </choice>
 		</oneOrMore>
 		<text/>
-	      </element> <!-- } --> 
+	      </element> 
 	    </optional>
 	    <optional>
 	      <a:documentation>
 	      </a:documentation>
-	      <!-- { --> <element name="tools">
+	      <element name="tools">
 		<oneOrMore>
-		  <!-- { --> <element name="tool">
+		  <element name="tool">
 		    <attribute name="name"/>
 		    <optional><attribute name="url"/></optional>
 		    <optional><attribute name="description"/></optional>
-		  </element> <!-- } -->
+		  </element>
 		</oneOrMore>
-	      </element> <!-- } -->
+	      </element>
 	    </optional>
-	  </element> <!-- } -->
+	  </element>
 	  <ref name="info"/>
 	</oneOrMore>
       </optional>
-    </element> <!-- } --> 
+    </element> 
   </define>
 
   <define name="html-content">
@@ -388,7 +480,7 @@
     <a:documentation>
       Pattern defines the html-element, which is any element in the xhtml namespace.
     </a:documentation>
-    <!-- { --> <element ns="http://www.w3.org/1999/xhtml">
+    <element ns="http://www.w3.org/1999/xhtml">
       <anyName>
 	<except>
 	  <nsName ns="http://common-criteria.rhcloud.com/app-vetting/1.0"/>
@@ -408,7 +500,7 @@
 	  <ref name="html-element"/>
 	</choice>
       </zeroOrMore>
-    </element> <!-- } -->
+    </element>
   </define>
 
   <define name="results-section">
