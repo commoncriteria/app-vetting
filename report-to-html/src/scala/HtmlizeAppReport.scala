@@ -59,11 +59,11 @@ class Component(id_in: String, pp_in: Elem){
         NodeHtmlizer.printNodeSeq(ppReq\"title")
     val results = 
       if (req\"passed" != null)
-        "</td><td class='result'>passed</td><td class='summary'><div class='summary-div'>"+(req\"activity"\"summary").text +"</div></td>" 
+        "</td><td class='result'>passed</td><td onClick=\"showOrHide('summary')\" class='summary'><div title='Click to Expand' class='summary-inv'>...</div><div class='summary-div'>"+(req\"activity"\"summary").text +"</div></td>" 
       else 
         "";
 
-    "<td class='req-id'>"+ req\"@id" +"</td><td class='apptext'><div class='title-div'>"+ appliedText +"</div></td><td class='req-note'><div class='note-div'>"+ NodeHtmlizer.printNodeSeq(ppReq\"note") +"</div>"+ results;
+    "<td class='req-id'>"+ req\"@id" +"</td><td onClick=\"showOrHide('title')\" class='apptext'><div title='Click to Expand' class='title-inv'>...</div><div class='title-div'>"+ appliedText +"</div></td><td onClick=\"showOrHide('note')\" class='req-note'><div title='Click to Expand' class='note-inv'>...</div><div class='note-div'>"+ NodeHtmlizer.printNodeSeq(ppReq\"note") +"</div>"+ results;
   }
 }
 
@@ -178,8 +178,13 @@ class ReportMaker(val report_in: Elem, val pp_in: Elem, val out_in: PrintWriter)
       .clickable:hover { cursor:pointer;}
       .tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
       .tg td{
-         font-family:Arial, sans-serif;font-size:14px;border-style:solid;overflow:hidden;word-break:normal;color:black;
-         }
+         font-family:Arial, sans-serif;
+         font-size:14px;
+         border-style:solid;
+         overflow:hidden;
+         word-break:normal;
+         color:black;
+      }
       .noborder { 
         border-width: 0px; 
         border-right: #000000;
@@ -202,20 +207,32 @@ class ReportMaker(val report_in: Elem, val pp_in: Elem, val out_in: PrintWriter)
       .tg tr:nth-child(odd) {background-color:#FFF}
 
 
-/*  .title-div   { display: none;}
+      .title-div   { display: none;}
       .note-div    { display: none;}
-      .summary-div { display: none;}*/
+      .summary-div { display: none;}
+
+      .title-inv   { display: block; width: 100%; text-align: center; }
+      .note-inv    { display: block; width: 100%; text-align: center; }
+      .summary-inv { display: block; width: 100%; text-align: center; }
+
+
+
     </style>
 
     <script type="text/javascript">
-      function toggleColumn(clazz){
+      function showOrHide(clazz){
+         toggleColumn(clazz+"-div", "block");
+         toggleColumn(clazz+"-inv", "none");
+      }
+
+      function toggleColumn(clazz, nondefault){
          var els = document.getElementsByClassName(clazz);
          for (aa = els.length-1; aa>=0; aa--){
-           if(els[aa].style.display != "inline"){
-               els[aa].style.display = "inline";
+           if(els[aa].style.display != ""){
+               els[aa].style.display = "";
 	   }
 	   else{
-               els[aa].style.display = "none";
+               els[aa].style.display = nondefault;
 	   }
          }
       }
@@ -224,7 +241,7 @@ class ReportMaker(val report_in: Elem, val pp_in: Elem, val out_in: PrintWriter)
   <body>
     <table class="tg">
       <tbody>
-      <tr><th>SEC</th><th>SUBSEC</th><th>REQ ID</th><th onClick="toggleColumn('title-div')">APPLIED TEXT</th><th onClick="toggleColumn('note-div')">REQUIREMENT NOTES</th><th>RESULT</th><th onClick="toggleColumn('summary-div')">SUMMARY</th></tr>
+      <tr><th>SEC</th><th>SUBSEC</th><th>REQ ID</th><th onClick="showOrHide('title');">APPLIED TEXT</th><th onClick="showOrHide('note')">REQUIREMENT NOTES</th><th>RESULT</th><th onClick="showOrHide('summary')">SUMMARY</th></tr>
 """);
     for(sub <- subsections){
       sub.toHtml(System.out, isFirst);
