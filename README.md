@@ -19,4 +19,4 @@ Project to standardize results that undergo evaluation (formal or informal) agai
 ## Resources
 * http://relaxng.org/ : RelaxNG resource
 * https://www.niap-ccevs.org/Profile/Info.cfm?id=394 : Application Software Protection Profile v1.2
-* http://www.scala-lang.org/ : Scala programing langauge resource
+* http://www.scala-lang.org/ : Scala programing language resource
