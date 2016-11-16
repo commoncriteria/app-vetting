@@ -1,7 +1,7 @@
 # app-vetting
 Project to standardize results that undergo evaluation (formal or informal) against NIAP's Application Software Protection Profile.
 
-## File functions
+## File/Directory descriptions
 
 * _bin_: Directory of exectuables
   * _app-vetting-full-report_: Executable to generate a full html report. Requires bash, java, and scala.
