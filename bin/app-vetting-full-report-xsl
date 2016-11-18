@@ -1,17 +1,22 @@
 #!/bin/bash
-set -e
-if [ "$1" == '--debug' ]; then
-    set -x
-    shift;
-fi
-
+#set -x
 if [ $# == 0 ] || [ "$1" == '--help' ] || [ "$1" == '-h' ] ;then
     echo "Usage:"
-    echo "   $0 <xml-report-in> [<html-report-out>]"
+    echo "   ${0##*/} <xml-report-in> [xml-app-software-protection-profile] [<html-report-out>]"
     exit 0
 fi
 
-# Find me
+    
+DASH_O="-o"
+OUT="${1%%.xml}.html"
+if [ $# == 2 ]; then
+    OUT="$2"
+    if [ $2 == --std-out ];then
+	OUT=""
+	DASH_O=""
+    fi
+fi
+
 function findDirectory() {
     it=$1
 
@@ -32,19 +37,4 @@ function findDirectory() {
 }
 DIR=$(findDirectory $0)/..
 
-# Default place
-PP_XML_URL=http://common-criteria.rhcloud.com/application-1.2.xml
-
-# See if there's non-default settings.
-if [ -r $DIR/bin/AppVettingFullReport.conf ]; then source $DIR/bin/AppVettingFullReport.conf; fi
-
-# Run the thing 
-OUT=/dev/stdout
-if [ "$2" != "" ]; then OUT="$2"; fi
-scala -e "  
-    $(cat $DIR/report-to-html/src/scala/HtmlizeAppReport.scala; 
-    echo -e "var args=Array(\"$1\", \"$PP_XML_URL\");\nReporter.main(args);")
-" > "$OUT"
-
-
-
+xsltproc $DASH_O "$OUT" $DIR/xsl/results2vettingreport.xsl "$1"

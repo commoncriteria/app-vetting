@@ -5,6 +5,110 @@ import scala.collection.mutable.ArrayBuffer
 import java.util.HashMap
 
 
+/**
+  * 
+  */
+object NodeHtmlizer{
+  var out: PrintWriter = null;
+
+  def printCCElement(elem:Elem):String={
+    val ret = new StringBuffer();
+    elem.label match {
+      case "selectables" => {
+        ret.append("<ul>")
+        for(selectable<-elem\"selectable"){
+          ret.append("<li>").append(selectable.text).append("</li>");
+        }
+        ret+"</ul>";
+      }
+      case "selection" => {
+        "<i>"+elem.text + "</i>";
+      }
+      case "assignable" | "assignment" => {
+        "<i>"+elem.text + "</i>";
+      }
+      case "abbr" | "linkref" => {
+        if( elem\@"linkend" != "" ){
+          " " + elem\@"linkend"+" "
+        }
+        else{
+          elem.text;
+        }
+      }
+      case "note"|"applied-text"|"title" => {
+        for(child<-elem.child){
+          ret.append(printNode(child));
+        }
+        ret+""
+      }
+      case _ =>{
+        for(child <- elem.child ){
+          ret.append(printNode(child));
+        }
+        ret +""
+      }
+    }
+  }
+  def printNodeSeq(seq: NodeSeq):String={
+    val ret = new StringBuilder();
+    for(node <- seq){
+      ret.append(printNode(node));
+    }
+    ret+"";
+  }
+
+  def printNode(root:Node ):String={
+    root match {
+      case elem: Elem => {
+        val ret = new StringBuffer();
+        if( elem.namespace == "http://www.w3.org/1999/xhtml" ){// 
+          //-- Put HTML elements back in.
+          ret.append("<"+elem.label);                              
+          ret.append(elem.attributes)
+          ret.append(">");
+          for(child <- elem.child ){
+            ret.append(printNode(child));
+          }
+          ret.append("</"+elem.label+">");
+          ret+"";
+        }
+        else{
+          printCCElement(elem);
+        }
+
+      }
+      case text: Text =>{
+        (text+"").replaceAll("&", "&amp;").replaceAll("<", "&lt;");
+      }
+      case attr: Attribute => {
+        ""
+      }
+      case _ => { 
+        System.err.println("Unrecognized node: " + root);
+        ""
+      }
+    }
+  }
+}
+
+object ApplicationProtectionProfile{
+  /**
+    * 
+    */
+  def findRequirement(root:Elem, reqId:String)={
+    root \\ "_" filter attributeValueEquals(reqId)
+  }
+
+
+  /**
+    * 
+    */
+  def attributeValueEquals(value: String)(node: Node) = {
+    node.attributes.exists(_.value.text == value)
+  }
+}
+
+
 class Component(id_in: String, pp_in: Elem){
   val id = id_in; 
   val pp = pp_in;
@@ -34,7 +138,7 @@ class Component(id_in: String, pp_in: Elem){
       }
 
 
-      out.println("<td class='subsection' rowspan='"+reqCount+"'>"+id+"</td>")
+      out.println("<td id='"+id+"' class='subsection' rowspan='"+reqCount+"'>"+id+"</td>")
       var notFirst="";
       for(aa <- requirements){
         out.println(notFirst);
@@ -63,7 +167,7 @@ class Component(id_in: String, pp_in: Elem){
       else 
         "";
 
-    "<td class='req-id'>"+ req\"@id" +"</td><td onClick=\"showOrHide('title')\" class='apptext'><div title='Click to Expand' class='title-inv'>...</div><div class='title-div'>"+ appliedText +"</div></td><td onClick=\"showOrHide('note')\" class='req-note'><div title='Click to Expand' class='note-inv'>...</div><div class='note-div'>"+ NodeHtmlizer.printNodeSeq(ppReq\"note") +"</div>"+ results;
+    "<td id='"+req\"@id"+"'class='req-id'>"+ req\"@id" +"</td><td onClick=\"showOrHide('title')\" class='apptext'><div title='Click to Expand' class='title-inv'>...</div><div class='title-div'>"+ appliedText +"</div></td><td onClick=\"showOrHide('note')\" class='req-note'><div title='Click to Expand' class='note-inv'>...</div><div class='note-div'>"+ NodeHtmlizer.printNodeSeq(ppReq\"note") +"</div>"+ results;
   }
 }
 
@@ -107,7 +211,7 @@ class SubSection(id_in: String, pp_in: Elem){
       if(!amIFirst ){                                              // If it's not the first...
         out.println("<tr>");                                       // ...start a new row
       }
-      out.println("<td class='section' rowspan='"+reqCount+"'>"+id+"</td>")        // Insert cell
+      out.println("<td id='"+id+"' class='section' rowspan='"+reqCount+"'>"+id+"</td>")        // Insert cell
       var isFirst = true;                                          // Create a variable that's true only for the first run
       for(component <- components){                                // Go through all the components
         component.toHtml(out,isFirst);                             // Print out the component
@@ -176,6 +280,11 @@ class ReportMaker(val report_in: Elem, val pp_in: Elem, val out_in: PrintWriter)
       }
 
       .clickable:hover { cursor:pointer;}
+      .comment { 
+        border-radius: 25px;
+        border: 2px solid #73AD21;
+        padding: 20px; 
+      }
       .tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
       .tg td{
          font-family:Arial, sans-serif;
@@ -207,13 +316,8 @@ class ReportMaker(val report_in: Elem, val pp_in: Elem, val out_in: PrintWriter)
       .tg tr:nth-child(odd) {background-color:#FFF}
 
 
-      .title-div   { display: none;}
-      .note-div    { display: none;}
-      .summary-div { display: none;}
-
-      .title-inv   { display: block; width: 100%; text-align: center; }
-      .note-inv    { display: block; width: 100%; text-align: center; }
-      .summary-inv { display: block; width: 100%; text-align: center; }
+      .title-div, .note-div, .summary-div   { display: none; max-width: 500px;}
+      .title-inv, .note-inv, .summary-inv   { display: block; width: 100%; text-align: center; }
 
 
 
@@ -251,9 +355,41 @@ class ReportMaker(val report_in: Elem, val pp_in: Elem, val out_in: PrintWriter)
 """
       </tbody>
     </table>
+""");
+
+    println("<br/>");
+    println("<h2>Comments</h2>");
+
+    for(comment<-report\\ "comment"){
+      println("<h3>");
+      for(tag <- comment\"tag"){
+        println("<a href='#"+tag.text+"'>"+tag.text+"</a>");
+      }
+      println("</h3>");
+      commentToHtml(comment, System.out);
+
+    }
+    println(
+"""
   </body>
 </html>
 """);
+
+  }
+
+  def commentToHtml(comm: Node, out: PrintStream){
+
+    out.println("<table class='comment'><tr><td>" + (comm\"@who")+": "+(comm\"@what")+ "<br/>" + (comm\"@when") + "</td><td>");
+    out.println(NodeHtmlizer.printNodeSeq(comm\"text"));
+    out.println("</td></tr>");
+    for(reply <- comm\"reply" ){
+      out.println("<tr><td></td><td>");
+      commentToHtml(reply, out);
+      out.println("</td></tr>");
+    }
+
+    out.println("</table>");
+
 
   }
 
@@ -314,90 +450,6 @@ class ReportMaker(val report_in: Elem, val pp_in: Elem, val out_in: PrintWriter)
 }
 
 
-/**
-  * 
-  */
-object NodeHtmlizer{
-  var out: PrintWriter = null;
-
-  def printCCElement(elem:Elem):String={
-    val ret = new StringBuffer();
-    elem.label match {
-      case "selectables" => {
-        ret.append("<ul>")
-        for(selectable<-elem\"selectable"){
-          ret.append("<li>").append(selectable.text).append("</li>");
-        }
-        ret+"</ul>";
-      }
-      case "selection" => {
-        "<i>"+elem.text + "</i>";
-      }
-      case "assignable" | "assignment" => {
-        "<i>"+elem.text + "</i>";
-      }
-      case "abbr" | "linkref" => {
-        if( elem\@"linkend" != "" ){
-          " " + elem\@"linkend"+" "
-        }
-        else{
-          elem.text;
-        }
-      }
-      case "note"|"applied-text"|"title" => {
-        for(child<-elem.child){
-          ret.append(printNode(child));
-        }
-        ret+""
-      }
-      case _ =>{
-        System.err.println("Unrecognized element: "+elem.label);
-        ""
-      }
-    }
-  }
-  def printNodeSeq(seq: NodeSeq):String={
-    val ret = new StringBuilder();
-    for(node <- seq){
-      ret.append(printNode(node));
-    }
-    ret+"";
-  }
-
-  def printNode(root:Node):String={
-    root match {
-      case elem: Elem => {
-        val ret = new StringBuffer();
-        if( elem.namespace == "http://www.w3.org/1999/xhtml" ){// 
-          //-- Put HTML elements back in.
-          ret.append("<"+elem.label);                              
-          ret.append(elem.attributes)
-          ret.append(">");
-          for(child <- elem.child ){
-            ret.append(printNode(child));
-          }
-          ret.append("</"+elem.label+">");
-          ret+"";
-        }
-        else{
-          printCCElement(elem);
-        }
-
-      }
-      case text: Text =>{
-        (text+"").replaceAll("&", "&amp;").replaceAll("<", "&lt;");
-      }
-      case attr: Attribute => {
-        ""
-      }
-      case _ => { 
-        System.err.println("Unrecognized node: " + root);
-        ""
-      }
-    }
-
-  }
-}
 
 object Reporter {
   /**
@@ -420,19 +472,3 @@ object Reporter {
 }
 
 
-object ApplicationProtectionProfile{
-  /**
-    * 
-    */
-  def findRequirement(root:Elem, reqId:String)={
-    root \\ "_" filter attributeValueEquals(reqId)
-  }
-
-
-  /**
-    * 
-    */
-  def attributeValueEquals(value: String)(node: Node) = {
-    node.attributes.exists(_.value.text == value)
-  }
-}

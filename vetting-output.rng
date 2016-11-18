@@ -46,7 +46,7 @@
 		  </element> 
 		  <element name="state"> 
 		    <data type="string">
-		      <param name="pattern">[A-Z]{2}?</param>
+		      <param name="pattern">[A-Z]{2}</param>
 		    </data>
 		  </element> 
 		  <element name="zip-code"> 
@@ -92,7 +92,8 @@
 	    </optional>
             <ref name="info"/>
 	  </element> 
-	</oneOrMore>
+	</oneOrMore> <!-- End of platforms section -->
+	
 	<optional>
 	  <element name="hash"> 
 	    <a:documentation>Checksum of the app package </a:documentation>
@@ -102,6 +103,7 @@
             <text/>
 	  </element> 
 	</optional>
+
 	<optional>
 	  <element name="signature"> 
 	    <a:documentation>Cryptographic signature for the app package.</a:documentation>
@@ -137,9 +139,10 @@
 	      <text/>
 	    </element> 
 	  </optional>
-	  <ref name="info"/>
+
 	</optional>
-      </element> 
+	<ref name="info"/>
+      </element> <!-- End of app info -->
       <oneOrMore> 
 	<element name="evaluation">  
 	  <a:documentation>Information about an evaluation</a:documentation>
@@ -247,7 +250,19 @@
 	  <ref name="info"/>
 	</element> 
       </oneOrMore>
-
+      <zeroOrMore>
+	<element name="comment">
+	  <zeroOrMore>
+	    <element name="tag">
+	      <a:documentation>
+		Requirement id or any keyword.
+	      </a:documentation>
+	      <text/>	    
+	    </element>
+	  </zeroOrMore>
+	  <ref name="comment-content"/>
+	</element>
+      </zeroOrMore>
     </element> 
   </start>
   <!-- Start piecemeal definitions -->
@@ -393,7 +408,6 @@
       This is a generic tree-like structure that hopefully 
       lets users expand the report structure as necessary.
     </a:documentation>
-
     <zeroOrMore>
       <element name="info"> 
 	<optional>
@@ -402,8 +416,46 @@
 	  </a:documentation>
 	  <attribute name="type"/>
 	</optional>
-	<text/>
-	<ref name="info"/>
+	<zeroOrMore>
+	  <choice>
+	    <text/>
+	    <ref name="info"/>
+	  </choice>
+	</zeroOrMore>
+      </element> 
+    </zeroOrMore>
+  </define>
+
+
+  <define name="comment-content">
+    <attribute name="when">
+      <a:documentation>
+	Timestamp for this comment
+      </a:documentation>
+    </attribute>
+
+    <attribute name="who">
+      <a:documentation>
+	Identifier of the originator of the comment
+      </a:documentation>
+    </attribute>
+
+    <attribute name="what">
+      <a:documentation>
+	A unique-id for this comment.
+      </a:documentation>
+    </attribute>
+    
+    
+    <a:documentation>
+      Content for a comment or a reply.
+    </a:documentation>
+    <element name="text">
+      <ref name="html-content"/>
+    </element>
+    <zeroOrMore>
+      <element name="reply"> 
+	<ref name="comment-content"/>
       </element> 
     </zeroOrMore>
   </define>
