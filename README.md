@@ -1,4 +1,4 @@
-# app-vetting
+# app-vetting [![Build Status](https://jenkins-criteria.rhcloud.com/buildStatus/icon?job=app-vetting)](https://jenkins-criteria.rhcloud.com/job/app-vetting/)
 Project to standardize results that undergo evaluation (formal or informal) against NIAP's Application Software Protection Profile.
 
 ## File/Directory descriptions
