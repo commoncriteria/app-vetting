@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar 
-    ns="http://common-criteria.rhcloud.com/app-vetting/1.0"
+    ns="https://commoncriteria.github.io/pp/app-vetting/1.0"
     xmlns="http://relaxng.org/ns/structure/1.0"
     xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"	 
     xmlns:htm="http://www.w3.org/1999/xhtml"
@@ -535,7 +535,7 @@
     <element ns="http://www.w3.org/1999/xhtml">
       <anyName>
 	<except>
-	  <nsName ns="http://common-criteria.rhcloud.com/app-vetting/1.0"/>
+	  <nsName ns="https://commoncriteria.github.io/pp/app-vetting/1.0"/>
 	</except>
       </anyName>
       <a:documentation>
