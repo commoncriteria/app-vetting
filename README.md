@@ -1,4 +1,5 @@
-# app-vetting [![Build Status](https://jenkins-criteria.rhcloud.com/buildStatus/icon?job=app-vetting)](https://jenkins-criteria.rhcloud.com/job/app-vetting/)
+# app-vetting 
+[![Build Status](https://travis-ci.org/commoncriteria/app-vetting.svg?branch=master)](https://travis-ci.org/commoncriteria/app-vetting)
 Project to standardize results that undergo evaluation (formal or informal) against NIAP's Application Software Protection Profile.
 
 ## File/Directory descriptions
