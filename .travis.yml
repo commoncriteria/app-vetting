@@ -9,18 +9,21 @@ branches:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq make xsltproc
+  - sudo apt-get install -qq coreutils make xsltproc
 
 script:
   - git clone https://github.com/commoncriteria/transforms.git
   - git clone https://github.com/commoncriteria/commoncriteria.github.io.git
+  - git clone https://github.com/commoncriteria/ci-scripts.git
   - mkdir -p commoncriteria.github.io/pp/$(basename $TRAVIS_REPO_SLUG)
   - ./transforms/schemas/rng-to-html/bin/rng-to-html vetting-output.rng
   - cp vetting-output.html commoncriteria.github.io/pp/$(basename $TRAVIS_REPO_SLUG)
+  - chmod 700 ci-scripts/create_site.sh
   - cd commoncriteria.github.io
   - { git add --all && git commit -m "Deploying changes"; true; }
   - git pull --rebase
   - cd -
+  - ./ci-scripts/create_site.sh
   
 # Deploy HTML pages and updated index.html (needed before we can generate pdf versions)
 deploy:
