@@ -1,6 +1,9 @@
 # app-vetting 
 [![Build Status](https://travis-ci.org/commoncriteria/app-vetting.svg?branch=master)](https://travis-ci.org/commoncriteria/app-vetting)
-Project to standardize results that undergo evaluation (formal or informal) against NIAP's Application Software Protection Profile.
+[![GitHub issues Open](https://img.shields.io/github/issues/commoncriteria/app-vetting.svg?maxAge=2592000)](https://github.com/commoncriteria/app-vetting/issues) 
+![license](https://img.shields.io/badge/license-Unlicensed-blue.svg)
+
+Project to standardize results that undergo evaluation (formal or informal) against NIAP's [Protection Profile for Application Software](https://github.com/commoncriteria/application)
 
 ## File/Directory descriptions
 
@@ -21,3 +24,12 @@ Project to standardize results that undergo evaluation (formal or informal) agai
 * http://relaxng.org/ : RelaxNG resource
 * https://www.niap-ccevs.org/Profile/Info.cfm?id=394 : Application Software Protection Profile v1.2
 * http://www.scala-lang.org/ : Scala programing language resource
+
+## Links 
+* [National Information Assurance Partnership (NIAP)](https://www.niap-ccevs.org/)
+* [Common Criteria Portal](https://www.commoncriteriaportal.org/)
+
+## License
+
+See [License](./LICENSE)
+
