@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar 
-    ns="https://commoncriteria.github.io/pp/app-vetting/1.0"
+    ns="https://niap-ccevs.org/cc/app-vetting/1.0"
     xmlns="http://relaxng.org/ns/structure/1.0"
     xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"	 
     xmlns:htm="http://www.w3.org/1999/xhtml"
@@ -132,15 +132,13 @@
 	    <a:documentation>Description of the equipment this intends to run on (eg: Phone, laptop, watch).</a:documentation>
 	    <text/>
 	  </element>
-
+	</optional>
 	  <optional>
 	    <element name="filename"> 
 	      <a:documentation>Name of the apps file.</a:documentation>
 	      <text/>
 	    </element> 
 	  </optional>
-
-	</optional>
 	<ref name="info"/>
       </element> <!-- End of app info -->
       <oneOrMore> 
@@ -465,7 +463,8 @@
     <element name="requirement"> 
       <attribute name="id">
 	<data type="string">
-	  <param name="pattern">[a-z]+_[a-z]+(_ext)?\.[0-9]+\.[0-9]+[a-z]*</param>
+<!--	  <param name="pattern">[a-z]+_[a-z]+(_ext)?\.[0-9]+\.[0-9]+[a-z]*</param>-->
+	  <param name="pattern">[AaFf][A-Za-z]+_.+(_ext)?\.[0-9]+\.[0-9]+[a-z]*</param>
 	</data>
       </attribute>
       <optional>

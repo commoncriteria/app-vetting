@@ -1,5 +1,5 @@
 
-<report xmlns="http://common-criteria.rhcloud.com/ns/rr">
+<report xmlns="https://niap-ccevs.org/cc/app-vetting/1.0">
     <version>.1</version>
  
     <appinfo>

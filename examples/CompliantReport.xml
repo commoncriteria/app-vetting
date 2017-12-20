@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<report xmlns="https://niap-ccevs.org/cc/app-vetting/1.0"
+    xmlns:h="http://www.w3.org/1999/xhtml">
+    <app-info>
+        <name>Sample App</name>
+        <description>This app is designed to support business activities 
+        and is fully buzzword-enabled.  It creates cross-organizational synergies and enables cyber efficiencies
+        in real-time.</description>
+        <vendor name="Sample Corp." url="http://www.example.com">
+            <!-- look into vCard ontology to use established namespace for addresses -->
+            <us-address>
+            <street1>123 Main St</street1>
+            <street2></street2>
+            <city>Anytown</city>
+            <state>KS</state>
+            <zip-code>55555</zip-code>
+            </us-address>
+        </vendor>
+        <package-identification>com.examplecorp.sampleapp</package-identification>
+        <version>1.0</version>
+        <platform><type>Android</type><min-version>4.4</min-version></platform>
+        <hash type="sha1">09da1eefe30bc2cf2d548cfc8f3052c3feaf6ca4</hash>
+        <signature type="sha1">3325d1ba02fafbf7feb3fdde655f9e6251f19e12</signature>
+        <category>Samples</category>
+        <apptype>Commercial</apptype>
+        <filename>sampleapp.apk</filename>
+    </app-info>
+    <evaluation>
+      <environment>
+	<tester>
+          <name>John Doe</name>
+          <email>jdoe@testing.com</email>
+	</tester>
+        <date-started>09/30/2015</date-started>
+        <date-completed>09/30/2015</date-completed>
+	<test-devices><test-device version="4.5">Pixel</test-device></test-devices>
+      </environment>
+
+      <niap-requirements source-document="ApplicationSoftwareProtectionProfile" url="" version="1.2">
+	<requirement id="FDP_DEC_EXT.1.1">
+	  <applied-text>
+	    The application shall restrict its access to <selection>camera,microphone,<assignment>bell</assignment></selection>.
+	  </applied-text>
+	  <passed/>
+	  <activity>
+	    <summary>Did something <h:b>amazing</h:b></summary>
+	  </activity>
+	</requirement>
+      </niap-requirements>
+    </evaluation>
+</report>
