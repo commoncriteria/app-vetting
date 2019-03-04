@@ -1,5 +1,5 @@
 # app-vetting 
-[![Build Status](https://travis-ci.org/commoncriteria/app-vetting.svg?branch=master)](https://travis-ci.org/commoncriteria/app-vetting)
+[![Build Status](https://travis-ci.com/commoncriteria/app-vetting.svg?branch=master)](https://travis-ci.com/commoncriteria/app-vetting)
 [![GitHub issues Open](https://img.shields.io/github/issues/commoncriteria/app-vetting.svg?maxAge=2592000)](https://github.com/commoncriteria/app-vetting/issues) 
 ![license](https://img.shields.io/badge/license-Unlicensed-blue.svg)
 
