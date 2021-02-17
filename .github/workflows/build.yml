@@ -24,7 +24,13 @@ jobs:
 
       - name: Debug
         run: echo "The trigger was " ${{ github.event_name }}
-
+      
+      - name: Checkout transforms
+        uses: actions/checkout@v2
+        with:
+          repository: commoncriteria/transforms
+          path: transforms
+          
       - name: Convert RNG to HTML
         run: ${PWD}/transforms/schemas/rng-to-html/bin/rng-to-html vetting-output.rng
 
