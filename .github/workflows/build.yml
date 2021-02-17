@@ -25,8 +25,8 @@ jobs:
       - name: Debug
         run: echo "The trigger was " ${{ github.event_name }}
 
-      - name: Convert XML to HTML
-        run: make
+      - name: Convert RNG to HTML
+        run: ./transforms/schemas/rng-to-html/bin/rng-to-html vetting-output.rng
 
       - name: Checkout commoncriteria.github.io
         uses: actions/checkout@v2
@@ -51,12 +51,7 @@ jobs:
         run: rm -rf commoncriteria.github.io/pp/$(basename $GITHUB_REPOSITORY)/*
 
       - name: Copy newest version of PP into Github Pages
-        run: cp -r output/* commoncriteria.github.io/pp/$(basename $GITHUB_REPOSITORY)
-
-      - name: Create PDFs
-        # Uncomment below to only build PDFs when workflow is manually triggered
-        #if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: ./ci-scripts/generate_pdfs.sh
+        run: cp vetting-output.html commoncriteria.github.io/pp/$(basename $GITHUB_REPOSITORY)
 
       - name: Update commoncriteria.github.io with latest revision
         run: ./ci-scripts/create_site.sh
