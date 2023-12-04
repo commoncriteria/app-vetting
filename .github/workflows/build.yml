@@ -4,7 +4,10 @@ name: Build
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches:
+    - 'master'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,17 +25,8 @@ jobs:
       - name: Install Build Packages
         run: sudo apt-get update && sudo apt-get install -y libfontconfig python3-bs4 wkhtmltopdf xsltproc xvfb
 
-      - name: Debug
-        run: echo "The trigger was " ${{ github.event_name }}
-      
-      - name: Checkout transforms
-        uses: actions/checkout@v2
-        with:
-          repository: commoncriteria/transforms
-          path: transforms
-          
-      - name: Convert RNG to HTML
-        run: ${PWD}/transforms/schemas/rng-to-html/bin/rng-to-html vetting-output.rng
+      - name: Convert XML to HTML
+        run: make
 
       - name: Checkout commoncriteria.github.io
         uses: actions/checkout@v2
@@ -57,7 +51,12 @@ jobs:
         run: rm -rf commoncriteria.github.io/pp/$(basename $GITHUB_REPOSITORY)/*
 
       - name: Copy newest version of PP into Github Pages
-        run: cp vetting-output.html commoncriteria.github.io/pp/$(basename $GITHUB_REPOSITORY)
+        run: cp -r output/* commoncriteria.github.io/pp/$(basename $GITHUB_REPOSITORY)
+
+      - name: Create PDFs
+        # Uncomment below to only build PDFs when workflow is manually triggered
+        #if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: ./ci-scripts/generate_pdfs.sh
 
       - name: Update commoncriteria.github.io with latest revision
         run: ./ci-scripts/create_site.sh
